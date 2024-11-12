@@ -55,7 +55,7 @@ window.onload = runOnLoad_functions
 
 // part of event listener
 function checkIFCurrentRound() {
-    if (currentRound >= 5) return false
+    if (currentRound > 5) return false
     return true
 }
 
