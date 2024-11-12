@@ -54,6 +54,11 @@ function runOnLoad_functions() {
 window.onload = runOnLoad_functions
 
 // part of event listener
+function checkIFCurrentRound() {
+    if (currentRound >= 5) return False
+    return True
+}
+
 function checkIfPlayerWin(selected_id) {
     switch(selected_id)
     {
@@ -113,18 +118,24 @@ function reset() {
 frame_picture.forEach(div => { 
     div.addEventListener('click', function() { 
 
-        if (checkIfPlayerWin(div.id)) {
-            showResult("You win!", "green")
-            playerWins++
-        }
-        else if (isTie) showResult("Its a tie!", "orange")
-        else {
-            showResult("You lose!", "red")
-            enemyWins++
-        }
+        if (checkIFCurrentRound()) {
 
-        showResetButton()
-        refreshStats()
+            if (checkIfPlayerWin(div.id)) {
+                showResult("You win!", "green")
+                playerWins++
+            }
+            else if (isTie) showResult("Its a tie!", "orange")
+            else {
+                showResult("You lose!", "red")
+                enemyWins++
+            }
+
+            showResetButton()
+            refreshStats()
+        }
+        else {
+            alert("Only 5 rounds!")
+        }
     }); 
 });
 
