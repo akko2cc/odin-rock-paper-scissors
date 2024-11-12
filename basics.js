@@ -55,8 +55,8 @@ window.onload = runOnLoad_functions
 
 // part of event listener
 function checkIFCurrentRound() {
-    if (currentRound >= 5) return False
-    return True
+    if (currentRound >= 5) return false
+    return true
 }
 
 function checkIfPlayerWin(selected_id) {
