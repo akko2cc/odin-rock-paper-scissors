@@ -1,144 +1,129 @@
-// document elements
-const frame_picture = document.querySelectorAll('.frame-picture')
-const title = document.querySelector(".title")
-const selection_container = document.querySelector(".selection-container")
-const reset_button = document.querySelector(".reset-button")
-const stats_container = document.querySelector(".stats-container")
-const player_scores = document.querySelector(".player-scores")
-const enemy_scores = document.querySelector(".enemy-scores")
-const current_round = document.querySelector(".current-round")
+// ----- INFORMATION -----
+// PROJECT: ROCK PAPER SCISSORS
+// AUTHOR: akko2cc
+// FRAMEWORK: vanilla.JS
+// CURRICULUM: The Odin Project (TOP)
 
-// global variables
-const default_title = "Rock-Paper-Scissors"
-let player_selected
-let enemy_selected
-let isTie = false
-let currentRound = 1
-let playerWins = 0, enemyWins = 0
+// ----- FEATURES -----
+// 1. support simple error handling
+// 2. mainly console, alert, and prompt
 
-
-// main run on load
 function getComputerChoice() {
-    let pick = Math.floor(Math.random() * 3) + 1 // 1 to 3
+    let generatedNumber = Math.floor(Math.random() * 2 + 1)
+
+    let pickArr = ["", "Rock", "Paper", "Scissors"]
+    return pickArr[generatedNumber]
+}
+
+function getHumanChoice() {
+    while (true) {
+        let humanPick = prompt("(1) Rock, (2) Paper, (3) Scissors")
+        if (humanPick === "1" || humanPick === "2" || humanPick === "3") {
+            let pickArr = ["", "Rock", "Paper", "Scissors"]
+            humanPick = pickArr[+humanPick]
+            return humanPick
+        }
+        else alert("Invalid input.")
+    }
+}
+
+function askStart() {
+    while (true) {
+        if (prompt("Do you want to start the game? (y/n)") === "y") {
+            break
+        }
+    }
+}
+
+function playGame()  {
+
+    let humanScore = 0, computerScore = 0
+    let currentRound = 1, maxRound = 5
+
+    function playRound(computerPick, humanPick) {
+
+        calculateResults = (computerPick, humanPick) => {
+            switch (computerPick) {
+                case "Rock":
+                    switch (humanPick) {
+                        case "Rock":
+                            alert(`Player: ${humanPick}\nComputer: ${computerPick}\n\nTie!`)
+                            break
+                        case "Paper":
+                            alert(`Player: ${humanPick}\nComputer: ${computerPick}\n\nYou Win!`)
+                            humanScore++
+                            break
+                        case "Scissors":
+                            alert(`Player: ${humanPick}\nComputer: ${computerPick}\n\nYou Lose!`)
+                            computerScore++
+                            break
+                    }
+                    break
+                case "Paper":
+                    switch (humanPick) {
+                        case "Rock":
+                            alert(`Player: ${humanPick}\nComputer: ${computerPick}\n\nYou Lose!`)
+                            computerScore++
+                            break
+                        case "Paper":
+                            alert(`Player: ${humanPick}\nComputer: ${computerPick}\n\nTie!`)
+                            break    
+                        case "Scissors":
+                            alert(`Player: ${humanPick}\nComputer: ${computerPick}\n\nYou Win!`)
+                            humanScore++
+                            break
+                    }
+                    break
+                case "Scissors":
+                    switch (humanPick) {
+                        case "Rock":
+                            alert(`Player: ${humanPick}\nComputer: ${computerPick}\n\nYou Win!`)
+                            humanScore++
+                            break
+                        case "Paper":
+                            alert(`Player: ${humanPick}\nComputer: ${computerPick}\n\nYou Lose!`)
+                            computerScore++
+                            break
+                        case "Scissors":
+                            alert(`Player: ${humanPick}\nComputer: ${computerPick}\n\nTie!`)
+                            break
+                    }
+                    break
+            }
+        }
     
-    switch(pick)
-    {
-        case 1:
-            enemy_selected = "rock"
-            break;
-        case 2:
-            enemy_selected = "paper"
-            break;
-        case 3:
-            enemy_selected = "scissors"
-            break;
-    }
-}
-
-function hideResetButton() {
-    reset_button.style.display = "none"
-}
-
-function refreshStats() {
-    player_scores.innerHTML = `[Player wins]<br>${playerWins}`
-    enemy_scores.innerHTML = `[Enemy wins]<br>${enemyWins}`
-    current_round.innerHTML = `[Current round]<br>${currentRound}`
-}
-
-function runOnLoad_functions() {
-    getComputerChoice()
-    hideResetButton()
-    refreshStats()
-}
-
-window.onload = runOnLoad_functions
-
-// part of event listener
-function checkIFCurrentRound() {
-    if (currentRound > 5) return false
-    return true
-}
-
-function checkIfPlayerWin(selected_id) {
-    switch(selected_id)
-    {
-        case "rock-picture":
-            player_selected = "rock"
-            if (enemy_selected === "paper") return false
-            else if (enemy_selected === "scissors") return true
-            else if (enemy_selected === "rock") {
-                isTie = true
-                return false
-            }
-            break;
-        case "paper-picture":
-            player_selected = "paper"
-            if (enemy_selected === "rock") return true
-            else if (enemy_selected === "scissors") return false
-            else if (enemy_selected === "paper") {
-                isTie = true
-                return false
-            }
-            break;
-        case "scissors-picture":
-            player_selected = "scissors"
-            if (enemy_selected === "paper") return true
-            else if (enemy_selected === "rock") return false
-            else if (enemy_selected === "scissors") {
-                isTie = true
-                return false
-            }
-            break;
-    }
-}
-
-function showResult(message, color) {
-    title.innerHTML = `<span style="color:${color}">${message}</span><br>You chose: ${player_selected}<br>Enemy selected: ${enemy_selected}`
-    title.style.textAlign = "center";
-    selection_container.style.display = "none"
-}
-
-function showResetButton() {
-    reset_button.style.display = ""
-}
-
-function reset() {
-    selection_container.style.display = ""
-    title.innerHTML = default_title
-    player_selected = ""
-    enemy_selected = ""
-    isTie = false
-
-    getComputerChoice()
-    hideResetButton()
-    currentRound++
-}
-
-// event listener
-frame_picture.forEach(div => { 
-    div.addEventListener('click', function() { 
-
-        if (checkIFCurrentRound()) {
-
-            if (checkIfPlayerWin(div.id)) {
-                showResult("You win!", "green")
-                playerWins++
-            }
-            else if (isTie) showResult("Its a tie!", "orange")
-            else {
-                showResult("You lose!", "red")
-                enemyWins++
-            }
-
-            showResetButton()
-            refreshStats()
+        printGameValues = () => {
+            alert(`Your Score: ${humanScore}\nComputer Score: ${computerScore}\n\nRound: ${currentRound}`)
         }
-        else {
-            alert("Only 5 rounds!")
-        }
-    }); 
-});
+    
+        calculateResults(computerPick, humanPick)
+        printGameValues()
+    
+    }
 
-reset_button.addEventListener('click', function() {
-    reset()
-})
+    printWinner = (humanScore, computerScore) => {
+        if (humanScore > computerScore) {
+            alert("Player Wins!")
+        }
+        else if (humanScore < computerScore) {
+            alert("Computer Wins!")
+        }
+        else alert("It's a Tie!")
+    }
+
+    while(currentRound <= maxRound) {
+        const computerPick = getComputerChoice()
+        const humanPick = getHumanChoice()
+
+        playRound(computerPick, humanPick)
+        currentRound++
+    }
+
+    printWinner(humanScore, computerScore)
+}
+
+// main run here
+
+askStart() // verification
+playGame() // game 5 rounds
+

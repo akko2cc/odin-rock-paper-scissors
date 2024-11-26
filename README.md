@@ -1,8 +1,10 @@
 # (TOP) Rock Paper Scissors Game
 
 ## Overview
-This is a simple project made from **The Odin Project** (TOP) curriculum. The purpose for this project is to enchance skills for vanilla **JS**
+This is a simple project made for the **The Odin Project** (TOP) curriculum.
+The purpose of this is for simple vanilla JS learning.
 
 ## Features
-- simple GUI game
-- simple stats screen
+- simple rock scissors game
+- mainly focuses on console, prompt, input
+- simple error handling
